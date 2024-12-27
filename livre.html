@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture sécurisée</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            height: 90vh;
+            border-radius: 8px;
+        }
+
+        .container h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .content {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        /* Bloquer la sélection du texte */
+        body, .container, .content {
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+        }
+
+        /* Empêcher l'impression */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" onkeydown="disableKey(event);">
+
+    <div class="container">
+        <h2>Lecture Sécurisée</h2>
+        <div class="content" id="book-content">
+            <p>
+                Bienvenue dans la lecture sécurisée de votre livre numérique. Voici un exemple de contenu pour la démonstration :
+            </p>
+            <p>
+                "L'apprentissage est une lumière qui guide l'humanité vers l'excellence. Ce livre numérique est un guide essentiel pour tout lecteur cherchant à approfondir ses connaissances et à explorer des idées nouvelles."
+            </p>
+            <p>
+                Merci de respecter les droits d'auteur en évitant toute tentative de copie, téléchargement ou partage du contenu.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Empêcher les raccourcis clavier comme Ctrl+C, Ctrl+P, etc.
+        function disableKey(event) {
+            const forbiddenKeys = [
+                'c', // Copier
+                'p', // Imprimer
+                's', // Enregistrer
+                'x', // Couper
+                'u', // Afficher le code source
+                'i', // Outils de développement
+                'k', // DevTools dans Edge
+            ];
+            
+            if (event.ctrlKey && forbiddenKeys.includes(event.key.toLowerCase())) {
+                event.preventDefault();
+                alert("Cette action est désactivée pour protéger le contenu.");
+            }
+
+            // Empêcher F12 (DevTools)
+            if (event.key === "F12") {
+                event.preventDefault();
+                alert("Les outils de développement sont désactivés.");
+            }
+        }
+
+        // Empêcher le clic droit
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            alert("Le clic droit est désactivé pour protéger le contenu.");
+        });
+
+        // Désactiver la capture d'écran (Non garanti, mais peut être combiné avec CSS pour un floutage dynamique)
+        if (navigator.userAgent.toLowerCase().includes('android') || navigator.userAgent.toLowerCase().includes('iphone')) {
+            alert("La capture d'écran est désactivée sur mobile.");
+        }
+
+        // Ajout de mesures anti-développeur (empêcher les outils de dev comme inspecteur d'éléments)
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I'e.key === 'C')) {
+                e.preventDefault();
+                alert("L'accès aux outils de développement est désactivé.");
+            }
+        });
+    </script>
+
+</body>
+</html>
