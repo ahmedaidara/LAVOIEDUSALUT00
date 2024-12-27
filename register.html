@@ -4,50 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            padding: 0;
             margin: 0;
+            padding: 0;
+            background-color: #f1f1f1;
         }
         .container {
             width: 50%;
             margin: 0 auto;
-            padding: 40px;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-top: 50px;
             text-align: center;
+            padding: 40px;
         }
         h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
+            font-size: 28px;
         }
         .form-group {
-            margin-bottom: 20px;
-            text-align: left;
+            margin: 20px 0;
         }
-        input {
-            width: 100%;
+        input[type="email"], input[type="password"] {
             padding: 10px;
-            margin: 5px 0;
+            width: 100%;
             font-size: 16px;
             border-radius: 5px;
             border: 1px solid #ccc;
         }
-        .submit-button {
+        button {
             background-color: #3498db;
             color: white;
-            padding: 12px 25px;
+            padding: 15px 30px;
             font-size: 18px;
             border: none;
             cursor: pointer;
             border-radius: 5px;
-            margin-top: 10px;
+            margin-top: 20px;
         }
-        .submit-button:hover {
+        button:hover {
             background-color: #2980b9;
         }
     </style>
@@ -56,18 +49,40 @@
 
     <div class="container">
         <h2>Inscription</h2>
-        <form action="payment.html" method="post">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Entrez votre email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" name="password" placeholder="Entrez votre mot de passe" required>
-            </div>
-            <button type="submit" class="submit-button">S'inscrire</button>
-        </form>
+        <div class="form-group">
+            <input type="email" id="email" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+            <input type="password" id="password" placeholder="Mot de passe" required>
+        </div>
+        <button onclick="registerUser()">S'inscrire</button>
     </div>
+
+    <script>
+        function registerUser() {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            var data = {
+                "email": email,
+                "password": password,
+                "action": "register"
+            };
+
+            fetch('https://script.google.com/macros/s/AKfycbyPI4GoGSjf1VUyKvP_utQwWmNQZk_XLUEol8g6hNe4fSVnt7lQoZHzGVm0I69-UgMGKA/exec', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    window.location.href = 'login.html'; // Redirige vers la page de connexion
+                } else {
+                    alert('Erreur : ' + data.message);
+                }
+            });
+        }
+    </script>
 
 </body>
 </html>
