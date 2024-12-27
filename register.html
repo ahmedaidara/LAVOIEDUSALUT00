@@ -1,88 +1,34 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f1f1f1;
-        }
-        .container {
-            width: 50%;
-            margin: 0 auto;
-            text-align: center;
-            padding: 40px;
-        }
-        h2 {
-            font-size: 28px;
-        }
-        .form-group {
-            margin: 20px 0;
-        }
-        input[type="email"], input[type="password"] {
-            padding: 10px;
-            width: 100%;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            background-color: #3498db;
-            color: white;
-            padding: 15px 30px;
-            font-size: 18px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 20px;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-    </style>
-</head>
-<body>
+function registerUser() {
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
 
-    <div class="container">
-        <h2>Inscription</h2>
-        <div class="form-group">
-            <input type="email" id="email" placeholder="Email" required>
-        </div>
-        <div class="form-group">
-            <input type="password" id="password" placeholder="Mot de passe" required>
-        </div>
-        <button onclick="registerUser()">S'inscrire</button>
-    </div>
+    var data = {
+        "email": email,
+        "password": password,
+        "action": "register"
+    };
 
-    <script>
-        function registerUser() {
-            var email = document.getElementById('email').value;
-            var password = document.getElementById('password').value;
+    // Remplace avec ton URL du script Google Apps
+    var scriptUrl = 'https://script.google.com/macros/s/AKfycbwikWv0vguSqHwitLwWTFY-2gI7g3ZTtrSzBkrTtXKZimH0Q4S98K5DcmcLsZNNPryg4g/exec';
 
-            var data = {
-                "email": email,
-                "password": password,
-                "action": "register"
-            };
-
-            fetch('https://script.google.com/macros/s/AKfycbyPI4GoGSjf1VUyKvP_utQwWmNQZk_XLUEol8g6hNe4fSVnt7lQoZHzGVm0I69-UgMGKA/exec', {
-                method: 'POST',
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === "success") {
-                    window.location.href = 'login.html'; // Redirige vers la page de connexion
-                } else {
-                    alert('Erreur : ' + data.message);
-                }
-            });
+    fetch(scriptUrl, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+            'Content-Type': 'application/json'
         }
-    </script>
-
-</body>
-</html>
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert('Inscription réussie !');
+            window.location.href = 'login.html'; // Redirige vers la page de connexion
+        } else {
+            alert('Erreur : ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Erreur lors de l\'inscription:', error);
+        alert('Une erreur est survenue. Veuillez réessayer.');
+    });
+}
