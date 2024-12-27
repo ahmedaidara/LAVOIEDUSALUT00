@@ -1,34 +1,66 @@
-function registerUser() {
-    var email = document.getElementById('email').value;
-    var password = document.getElementById('password').value;
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-    var data = {
-        "email": email,
-        "password": password,
-        "action": "register"
-    };
+    <h1>Inscription</h1>
+    <form id="registerForm">
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
 
-    // Remplace avec ton URL du script Google Apps
-    var scriptUrl = 'https://script.google.com/macros/s/AKfycbwikWv0vguSqHwitLwWTFY-2gI7g3ZTtrSzBkrTtXKZimH0Q4S98K5DcmcLsZNNPryg4g/exec';
+        <label for="password">Mot de passe:</label>
+        <input type="password" id="password" required>
 
-    fetch(scriptUrl, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'application/json'
+        <button type="submit">S'inscrire</button>
+    </form>
+
+    <script>
+        // Fonction d'inscription
+        function registerUser() {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var data = {
+                "email": email,
+                "password": password,
+                "action": "register"
+            };
+
+            // Remplace l'URL par celle de ton script Google Apps
+            var scriptUrl = 'https://script.google.com/macros/s/AKfycbwikWv0vguSqHwitLwWTFY-2gI7g3ZTtrSzBkrTtXKZimH0Q4S98K5DcmcLsZNNPryg4g/exec';
+
+            // Envoi de la requête POST à Google Apps Script
+            fetch(scriptUrl, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert('Inscription réussie !');
+                    window.location.href = 'login.html'; // Redirige vers la page de connexion
+                } else {
+                    alert('Erreur : ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'inscription:', error);
+                alert('Une erreur est survenue. Veuillez réessayer.');
+            });
         }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "success") {
-            alert('Inscription réussie !');
-            window.location.href = 'login.html'; // Redirige vers la page de connexion
-        } else {
-            alert('Erreur : ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Erreur lors de l\'inscription:', error);
-        alert('Une erreur est survenue. Veuillez réessayer.');
-    });
-}
+
+        // Ajout d'un écouteur d'événement pour le formulaire d'inscription
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche l'envoi du formulaire par défaut
+            registerUser(); // Appel de la fonction registerUser
+        });
+    </script>
+</body>
+</html>
